@@ -109,7 +109,67 @@ function setTool(tool){
   document.getElementById("prompt").focus();
 }
 
-function sendMessage(){
+function sendMessage(
+async function sendMessage() {
+  const input = document.getElementById("prompt");
+  const messages = document.getElementById("messages");
+  const sendButton = document.querySelector(".send");
+
+  const value = input.value.trim();
+  if (!value) return;
+
+  const user = document.createElement("div");
+  user.className = "msg user";
+  user.textContent = value;
+  messages.appendChild(user);
+
+  input.value = "";
+  sendButton.disabled = true;
+  sendButton.textContent = "Thinking...";
+
+  const bot = document.createElement("div");
+  bot.className = "msg bot";
+  bot.textContent = "MH AI উত্তর তৈরি করছে...";
+  messages.appendChild(bot);
+
+  window.scrollTo(0, document.body.scrollHeight);
+
+  try {
+    const response = await fetch(
+      "https://mh-ai-jobh.onrender.com/api/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: value
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Server error: " + response.status);
+    }
+
+    bot.textContent =
+      data.reply ||
+      data.output_text ||
+      data.answer ||
+      data.message ||
+      "AI থেকে উত্তর পাওয়া যায়নি।";
+
+  } catch (error) {
+    bot.textContent = "দুঃখিত! সমস্যা হয়েছে: " + error.message;
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Send ↑";
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+}
+){
   const input=document.getElementById("prompt");
   const value=input.value.trim();
   if(!value)return;

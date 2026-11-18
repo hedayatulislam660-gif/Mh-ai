@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MH AI - Your Intelligent Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f7f9fd;color:#172b4d}
+header{height:65px;background:white;border-bottom:1px solid #e7edf5;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:800;color:#1768d5}
+.logo span{color:#20a5ee}
+.actions{display:flex;gap:9px;align-items:center}
+button,select{cursor:pointer;font-size:14px}
+.login{background:white;border:1px solid #1768d5;color:#1768d5;padding:10px 15px;border-radius:9px}
+.signup{background:#1768d5;color:white;border:0;padding:10px 15px;border-radius:9px}
+main{max-width:850px;margin:45px auto;padding:15px}
+.hero{text-align:center;margin:35px 0}
+.hero h1{font-size:34px;margin-bottom:12px}
+.hero h1 span{color:#1768d5}
+.hero p{color:#718096;line-height:1.6}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0}
+.tool{background:white;border:1px solid #e5eaf2;border-radius:15px;padding:18px 8px;text-align:center;cursor:pointer;transition:.2s}
+.tool:hover{border-color:#1768d5;transform:translateY(-3px)}
+.tool .emoji{font-size:25px;margin-bottom:10px}
+.tool b{font-size:13px}
+.chatbox{background:white;border:1px solid #e0e7f1;border-radius:18px;padding:15px;box-shadow:0 8px 30px #193b650a}
+.chatbox textarea{width:100%;height:75px;border:0;outline:none;resize:none;font-size:16px;font-family:inherit}
+.chatbottom{display:flex;justify-content:space-between;align-items:center}
+.send{background:#1768d5;color:white;border:0;border-radius:10px;padding:12px 20px}
+.messages{margin:20px 0;display:flex;flex-direction:column;gap:12px}
+.msg{background:white;padding:13px 16px;border-radius:13px;max-width:90%;line-height:1.5;white-space:pre-wrap}
+.user{align-self:flex-end;background:#e7f1ff}
+.bot{align-self:flex-start;border:1px solid #e5eaf2}
+.footer{text-align:center;color:#8b98aa;font-size:12px;margin:30px 0}
+select{border:1px solid #e0e7f1;border-radius:8px;padding:9px;background:white;color:#334}
+@media(max-width:550px){
+.hero h1{font-size:27px}
+.tools{grid-template-columns:repeat(2,1fr)}
+main{margin:15px auto}
+header{padding:0 10px}
+.login,.signup{padding:9px 10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MH <span>AI</span></div>
+  <div class="actions">
+    <select id="language" onchange="changeLanguage()">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ar">العربية</option>
+      <option value="es">Español</option>
+    </select>
+    <button class="login" onclick="alert('Login system coming soon!')">Login</button>
+    <button class="signup" onclick="alert('Signup system coming soon!')">Sign Up</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">Welcome to <span>MH AI</span></h1>
+    <p id="subtitle">Your intelligent AI assistant. Ask anything and explore new possibilities.</p>
+  </section>
+
+  <section class="tools">
+    <div class="tool" onclick="setTool('Chat')">
+      <div class="emoji">💬</div><b>AI Chat</b>
+    </div>
+    <div class="tool" onclick="setTool('Image')">
+      <div class="emoji">🎨</div><b>AI Image</b>
+    </div>
+    <div class="tool" onclick="setTool('Video')">
+      <div class="emoji">🎬</div><b>AI Video</b>
+    </div>
+    <div class="tool" onclick="setTool('Coding')">
+      <div class="emoji">💻</div><b>AI Coding</b>
+    </div>
+  </section>
+
+  <section class="messages" id="messages">
+    <div class="msg bot">Hello! 👋 I am MH AI. How can I help you today?</div>
+  </section>
+
+  <section class="chatbox">
+    <textarea id="prompt" placeholder="Ask MH AI anything..."></textarea>
+    <div class="chatbottom">
+      <span style="font-size:12px;color:#8492a6" id="mode">✨ AI Chat</span>
+      <button class="send" onclick="sendMessage()">Send ↑</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    © 2026 MH AI. All rights reserved.<br><br>
+    One AI. Unlimited Possibilities.
+  </div>
+</main>
+
+<script>
+let currentTool="Chat";
+
+function setTool(tool){
+  currentTool=tool;
+  document.getElementById("mode").innerText="✨ AI "+tool;
+  document.getElementById("prompt").focus();
+}
+
+function sendMessage(){
+  const input=document.getElementById("prompt");
+  const value=input.value.trim();
+  if(!value)return;
+
+  const messages=document.getElementById("messages");
+
+  const user=document.createElement("div");
+  user.className="msg user";
+  user.textContent=value;
+  messages.appendChild(user);
+
+  const bot=document.createElement("div");
+  bot.className="msg bot";
+  bot.textContent="Welcome to MH AI! Your message has been received. The real AI engine will be connected in the next development stage.";
+  messages.appendChild(bot);
+
+  input.value="";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+function changeLanguage(){
+  const lang=document.getElementById("language").value;
+  const heading=document.getElementById("heading");
+  const subtitle=document.getElementById("subtitle");
+
+  const translations={
+    en:["Welcome to <span>MH AI</span>","Your intelligent AI assistant. Ask anything and explore new possibilities."],
+    bn:["<span>MH AI</span>-তে স্বাগতম","আপনার বুদ্ধিমান AI সহকারী। যেকোনো প্রশ্ন করুন।"],
+    hi:["<span>MH AI</span> में आपका स्वागत है","आपका बुद्धिमान AI सहायक। कुछ भी पूछें।"],
+    ar:["مرحباً بك في <span>MH AI</span>","مساعدك الذكي. اسأل أي شيء."],
+    es:["Bienvenido a <span>MH AI</span>","Tu asistente inteligente de IA. Pregunta lo que quieras."]
+  };
+
+  heading.innerHTML=translations[lang][0];
+  subtitle.textContent=translations[lang][1];
+}
+</script>
+</body>
+</html>
